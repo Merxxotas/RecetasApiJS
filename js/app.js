@@ -91,9 +91,9 @@ function iniciarApp() {
     modalTittle.textContent = strMeal;
     modalBody.innerHTML = `
         <img class="img-fluid" src="${strMealThumb}" alt="receta ${strMeal}" />
-        <h3 class="my-3">Instructions</h3>
+        <h3 class="my-3">Instrucciones a continuación: </h3>
         <p>${strInstructions}</p>
-        <h3 class="my-3">Ingredients && Quantity</h3>
+        <h3 class="my-3">Ingredientes y Cantidad</h3>
     `;
 
     const listGroup = document.createElement("UL");
@@ -114,7 +114,22 @@ function iniciarApp() {
 
     modalBody.appendChild(listGroup);
 
-    console.log(receta);
+    const modalFooter = document.querySelector(".modal-footer");
+    limpiarHtml(modalFooter);
+
+    // // Botones de cerrar y favorito
+    const btnFavorito = document.createElement("BUTTON");
+    btnFavorito.classList.add("btn", "btn-danger", "col");
+    btnFavorito.textContent = "Guardar Favorito";
+    // ? // existeStorage(idMeal)
+    //   "Eliminar Favorito"
+    // : "Guardar Favorito";
+    const btnCerrarModal = document.createElement("BUTTON");
+    btnCerrarModal.classList.add("btn", "btn-secondary", "col");
+    btnCerrarModal.textContent = "Cerrar";
+    modalFooter.appendChild(btnFavorito);
+    modalFooter.appendChild(btnCerrarModal);
+    // console.log(receta);
     //Mostrando el Modal
     modal.show();
   }
@@ -195,8 +210,11 @@ function iniciarApp() {
   // }
 
   function limpiarHtml(selector) {
-    while (resultado.firstChild) {
-      selector.removeChild(resultado.firstChild);
+    // while (resultado.firstChild) {
+    //   selector.removeChild(resultado.firstChild);
+    // }
+    while (selector.firstChild) {
+      selector.removeChild(selector.firstChild);
     }
   }
 }
