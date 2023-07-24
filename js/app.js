@@ -95,6 +95,25 @@ function iniciarApp() {
         <p>${strInstructions}</p>
         <h3 class="my-3">Ingredients && Quantity</h3>
     `;
+
+    const listGroup = document.createElement("UL");
+    listGroup.classList.add("list-group");
+    // Mostrar cantidades e ingredientes
+    for (let i = 1; i <= 20; i++) {
+      if (receta[`strIngredient${i}`]) {
+        const ingrediente = receta[`strIngredient${i}`];
+        const cantidad = receta[`strMeasure${i}`];
+
+        const ingredienteLi = document.createElement("LI");
+        ingredienteLi.classList.add("list-group-item");
+        ingredienteLi.textContent = `${ingrediente} - ${cantidad}`;
+
+        listGroup.appendChild(ingredienteLi);
+      }
+    }
+
+    modalBody.appendChild(listGroup);
+
     console.log(receta);
     //Mostrando el Modal
     modal.show();
