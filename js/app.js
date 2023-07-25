@@ -1,10 +1,15 @@
 function iniciarApp() {
-  const selectCategorias = document.querySelector("#categorias");
-  selectCategorias.addEventListener("change", seleccionarCategoria);
-
   const resultado = document.querySelector("#resultado");
+  const selectCategorias = document.querySelector("#categorias");
+  if (selectCategorias) {
+    selectCategorias.addEventListener("change", seleccionarCategoria);
+    obtenerCategorias();
+  }
+  const favoritosDiv = document.querySelector(".favoritos");
+  if (favoritosDiv) {
+    obtenerFavoritos();
+  }
   const modal = new bootstrap.Modal("#modal", {});
-  obtenerCategorias();
   function obtenerCategorias() {
     const url = "https://www.themealdb.com/api/json/v1/1/categories.php";
     fetch(url)
@@ -130,6 +135,7 @@ function iniciarApp() {
       if (existeStorage(idMeal)) {
         eliminarFavorito(idMeal);
         btnFavorito.textContent = "Guardar Favorito";
+        mostrarToast("Su receta se ha Eliminado correctamente");
         return;
       }
       agregarFavorito({
@@ -138,6 +144,7 @@ function iniciarApp() {
         img: strMealThumb,
       });
       btnFavorito.textContent = "Eliminar Favorito";
+      mostrarToast("Su receta se ha Agregado correctamente");
     };
     // ? // existeStorage(idMeal)
     //   "Eliminar Favorito"
@@ -170,6 +177,27 @@ function iniciarApp() {
   function existeStorage(id) {
     const favoritos = JSON.parse(localStorage.getItem("favoritos")) ?? [];
     return favoritos.some((favorito) => favorito.id === id);
+  }
+
+  function mostrarToast(mensaje) {
+    const toastDiv = document.querySelector("#toast");
+    const toastBody = document.querySelector(".toast-body");
+    const toast = new bootstrap.Toast(toastDiv);
+    toastBody.textContent = mensaje;
+    toast.show();
+  }
+
+  function obtenerFavoritos() {
+    const favoritos = JSON.parse(localStorage.getItem("favoritos")) ?? [];
+    if (favoritos.length) {
+      mostrarRecetas(favoritos);
+      return;
+    }
+
+    const noFavoritos = document.createElement("P");
+    noFavoritos.textContent = "Todavía no hay favoritos añadidos al momento";
+    noFavoritos.classList.add("fs-4", "text-center", "font-bold", "mt-5");
+    favoritosDiv.appendChild(noFavoritos);
   }
 
   function limpiarHtml(selector) {
